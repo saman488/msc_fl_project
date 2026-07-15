@@ -1,0 +1,8 @@
+{
+  "partition": "iid_stratified",
+  "source_split": "train",
+  "num_clients": 5,
+  "random_state": 42,
+  "method": "StratifiedKFold",
+  "coverage_check": "all training rows assigned exactly once"
+}

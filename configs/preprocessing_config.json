@@ -1,0 +1,18 @@
+{
+  "raw_file": "data/raw/fe6cb615d161452c_MOHANAD_A4706/data/NF-UNSW-NB15-v2.csv",
+  "target_column": "Label",
+  "excluded_columns": [
+    "Label",
+    "Attack",
+    "IPV4_SRC_ADDR",
+    "IPV4_DST_ADDR"
+  ],
+  "feature_count": 41,
+  "random_state": 42,
+  "train_size": 0.7,
+  "validation_size": 0.15,
+  "test_size": 0.15,
+  "split_method": "stratified",
+  "scaler": "StandardScaler",
+  "scaler_fit_split": "train"
+}

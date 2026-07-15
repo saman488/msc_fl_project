@@ -1,0 +1,16 @@
+# Python virtual environment
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# macOS metadata
+.DS_Store
+
+# Raw, processed, and federated client data
+data/
+
+# Generated model artifacts
+models/*.pt
+models/*.joblib

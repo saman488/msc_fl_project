@@ -1,6 +1,20 @@
 {
   "raw_file": "data/raw/fe6cb615d161452c_MOHANAD_A4706/data/NF-UNSW-NB15-v2.csv",
-  "target_column": "Label",
+  "task": "multiclass_intrusion_detection",
+  "target": "attack_category",
+  "num_classes": 10,
+  "label_mapping": {
+    "Benign": 0,
+    "Analysis": 1,
+    "Backdoor": 2,
+    "DoS": 3,
+    "Exploits": 4,
+    "Fuzzers": 5,
+    "Generic": 6,
+    "Reconnaissance": 7,
+    "Shellcode": 8,
+    "Worms": 9
+  },
   "excluded_columns": [
     "Label",
     "Attack",

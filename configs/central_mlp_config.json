@@ -1,14 +1,25 @@
 {
-  "task": "binary_intrusion_detection",
-  "model": "MLPBinaryClassifier",
+  "task": "multiclass_intrusion_detection",
+  "model": "MLPMultiClassClassifier",
   "input_dim": 41,
+  "num_classes": 10,
   "batch_size": 4096,
   "epochs": 20,
   "learning_rate": 0.001,
   "weight_decay": 1e-05,
-  "threshold": 0.5,
-  "loss": "BCEWithLogitsLoss",
-  "pos_weight": 24.146775478305305,
+  "loss": "CrossEntropyLoss",
+  "class_weights": [
+    0.10414133965969086,
+    103.98949432373047,
+    110.15082550048828,
+    41.25224304199219,
+    7.576142311096191,
+    10.713908195495605,
+    14.434015274047852,
+    18.705322265625,
+    167.48658752441406,
+    1454.94873046875
+  ],
   "device": "mps",
   "random_state": 42
 }

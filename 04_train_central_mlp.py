@@ -1,9 +1,11 @@
 """
-Centralised MLP baseline for binary intrusion detection on NF-UNSW-NB15-v2.
+Centralised MLP baseline for MULTI-CLASS intrusion detection on NF-UNSW-NB15-v2.
 
-The script uses the processed arrays produced by 03_preprocess.py. Model
-selection is based on validation F1-score, and the held-out test set is evaluated
-once after loading the best validation checkpoint.
+Architecture and hyperparameters are kept identical to the binary baseline
+(41->128->64, AdamW, lr=1e-3, batch_size=4096); only the output layer (10 logits),
+the loss (class-weighted CrossEntropyLoss), and the metrics (multi-class) change.
+Model selection is based on validation macro-F1, and the held-out test set is
+evaluated once after loading the best validation checkpoint.
 """
 
 from pathlib import Path
@@ -15,14 +17,12 @@ import pandas as pd
 import torch
 from sklearn.metrics import (
     accuracy_score,
-    average_precision_score,
     balanced_accuracy_score,
+    classification_report,
     confusion_matrix,
     f1_score,
-    matthews_corrcoef,
     precision_score,
     recall_score,
-    roc_auc_score,
 )
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
@@ -35,11 +35,14 @@ CONFIGS_DIR = Path("configs")
 
 RANDOM_STATE = 42
 INPUT_DIM = 41
+NUM_CLASSES = 10
 BATCH_SIZE = 4096
 EPOCHS = 20
 LEARNING_RATE = 1e-3
 WEIGHT_DECAY = 1e-5
-THRESHOLD = 0.5
+
+# High-risk / rare attack classes to track explicitly (class ids).
+HIGH_RISK_CLASSES = {"Exploits": 4, "Shellcode": 8, "Worms": 9}
 
 
 class NumpyDataset(Dataset):
@@ -62,12 +65,13 @@ class NumpyDataset(Dataset):
 
     def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:
         features = torch.from_numpy(np.asarray(self.x[index], dtype=np.float32).copy())
-        label = torch.tensor(self.y[index], dtype=torch.float32)
+        # CrossEntropyLoss expects integer class indices (long).
+        label = torch.tensor(self.y[index], dtype=torch.long)
         return features, label
 
 
-class MLPBinaryClassifier(nn.Module):
-    def __init__(self, input_dim: int) -> None:
+class MLPMultiClassClassifier(nn.Module):
+    def __init__(self, input_dim: int, num_classes: int = NUM_CLASSES) -> None:
         super().__init__()
 
         self.network = nn.Sequential(
@@ -77,11 +81,11 @@ class MLPBinaryClassifier(nn.Module):
             nn.Linear(128, 64),
             nn.ReLU(),
             nn.Dropout(p=0.2),
-            nn.Linear(64, 1),
+            nn.Linear(64, num_classes),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.network(x).squeeze(1)
+        return self.network(x)
 
 
 def set_reproducibility(seed: int) -> None:
@@ -94,6 +98,13 @@ def get_device() -> torch.device:
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cpu")
+
+
+def load_class_names() -> list[str]:
+    with open(CONFIGS_DIR / "label_mapping.json") as file:
+        name_to_id = json.load(file)
+    id_to_name = {int(v): k for k, v in name_to_id.items()}
+    return [id_to_name[c] for c in range(len(id_to_name))]
 
 
 def build_loaders() -> tuple[DataLoader, DataLoader, DataLoader]:
@@ -132,16 +143,17 @@ def build_loaders() -> tuple[DataLoader, DataLoader, DataLoader]:
     return train_loader, val_loader, test_loader
 
 
-def compute_pos_weight() -> float:
-    y_train = np.load(PROCESSED_DIR / "y_train.npy", mmap_mode="r")
+def compute_class_weights(y_train: np.ndarray, num_classes: int = NUM_CLASSES) -> torch.Tensor:
+    """Balanced class weights: weight[c] = N_total / (num_classes * count_c)."""
+    counts = np.bincount(y_train, minlength=num_classes).astype(np.float64)
 
-    positive = int((y_train == 1).sum())
-    negative = int((y_train == 0).sum())
+    if (counts == 0).any():
+        missing = np.where(counts == 0)[0].tolist()
+        raise ValueError(f"Training set is missing classes: {missing}")
 
-    if positive == 0:
-        raise ValueError("Training set contains no attack samples.")
-
-    return negative / positive
+    total = counts.sum()
+    weights = total / (num_classes * counts)
+    return torch.tensor(weights, dtype=torch.float32)
 
 
 def train_one_epoch(
@@ -183,7 +195,7 @@ def evaluate(
     model.eval()
 
     loss_sum = 0.0
-    probabilities = []
+    predictions = []
     targets = []
 
     for features, labels in loader:
@@ -193,67 +205,43 @@ def evaluate(
         logits = model(features)
         loss = criterion(logits, labels)
 
-        y_prob = torch.sigmoid(logits).detach().cpu().numpy()
+        y_pred = torch.argmax(logits, dim=1).detach().cpu().numpy()
         y_true = labels.detach().cpu().numpy()
 
         loss_sum += loss.item() * len(y_true)
-        probabilities.append(y_prob)
+        predictions.append(y_pred)
         targets.append(y_true)
 
-    y_prob = np.concatenate(probabilities)
+    y_pred = np.concatenate(predictions).astype(int)
     y_true = np.concatenate(targets).astype(int)
-    y_pred = (y_prob >= THRESHOLD).astype(int)
 
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+    labels_range = list(range(NUM_CLASSES))
+    per_class_recall = recall_score(
+        y_true, y_pred, labels=labels_range, average=None, zero_division=0
+    )
+    per_class_f1 = f1_score(
+        y_true, y_pred, labels=labels_range, average=None, zero_division=0
+    )
 
-    specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
-    false_positive_rate = fp / (fp + tn) if (fp + tn) > 0 else 0.0
-    false_negative_rate = fn / (fn + tp) if (fn + tp) > 0 else 0.0
-    predicted_positive_rate = float(y_pred.mean())
+    metrics = {
+        "loss": float(loss_sum / len(y_true)),
+        "accuracy": accuracy_score(y_true, y_pred),
+        "balanced_accuracy": balanced_accuracy_score(y_true, y_pred),
+        "macro_precision": precision_score(
+            y_true, y_pred, average="macro", zero_division=0
+        ),
+        "macro_recall": recall_score(
+            y_true, y_pred, average="macro", zero_division=0
+        ),
+        "macro_f1": f1_score(y_true, y_pred, average="macro", zero_division=0),
+        "weighted_f1": f1_score(y_true, y_pred, average="weighted", zero_division=0),
+    }
 
-    return {
-    "loss": float(loss_sum / len(y_true)),
-    "accuracy": accuracy_score(y_true, y_pred),
-    "balanced_accuracy": balanced_accuracy_score(y_true, y_pred),
+    for class_id in labels_range:
+        metrics[f"recall_class_{class_id}"] = float(per_class_recall[class_id])
+        metrics[f"f1_class_{class_id}"] = float(per_class_f1[class_id])
 
-    "attack_precision": precision_score(y_true, y_pred, zero_division=0),
-    "attack_recall": recall_score(y_true, y_pred, zero_division=0),
-    "attack_f1": f1_score(y_true, y_pred, zero_division=0),
-
-    "macro_precision": precision_score(
-        y_true, y_pred, average="macro", zero_division=0
-    ),
-    "macro_recall": recall_score(
-        y_true, y_pred, average="macro", zero_division=0
-    ),
-    "macro_f1": f1_score(
-        y_true, y_pred, average="macro", zero_division=0
-    ),
-
-    "weighted_precision": precision_score(
-        y_true, y_pred, average="weighted", zero_division=0
-    ),
-    "weighted_recall": recall_score(
-        y_true, y_pred, average="weighted", zero_division=0
-    ),
-    "weighted_f1": f1_score(
-        y_true, y_pred, average="weighted", zero_division=0
-    ),
-
-    "roc_auc": roc_auc_score(y_true, y_prob),
-    "pr_auc": average_precision_score(y_true, y_prob),
-    "mcc": matthews_corrcoef(y_true, y_pred),
-
-    "specificity": specificity,
-    "false_positive_rate": false_positive_rate,
-    "false_negative_rate": false_negative_rate,
-    "predicted_positive_rate": predicted_positive_rate,
-
-    "tn": int(tn),
-    "fp": int(fp),
-    "fn": int(fn),
-    "tp": int(tp),
-}
+    return metrics
 
 
 def main() -> None:
@@ -264,14 +252,15 @@ def main() -> None:
     CONFIGS_DIR.mkdir(parents=True, exist_ok=True)
 
     device = get_device()
+    class_names = load_class_names()
     train_loader, val_loader, test_loader = build_loaders()
 
-    # Positive-class weighting offsets the 96/4 benign-attack imbalance.
-    pos_weight_value = compute_pos_weight()
-    pos_weight = torch.tensor([pos_weight_value], dtype=torch.float32, device=device)
+    # Balanced class weighting offsets the extreme multi-class imbalance.
+    y_train = np.load(PROCESSED_DIR / "y_train.npy")
+    class_weights = compute_class_weights(y_train, NUM_CLASSES).to(device)
 
-    model = MLPBinaryClassifier(INPUT_DIM).to(device)
-    criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+    model = MLPMultiClassClassifier(INPUT_DIM, NUM_CLASSES).to(device)
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=LEARNING_RATE,
@@ -279,16 +268,16 @@ def main() -> None:
     )
 
     config = {
-        "task": "binary_intrusion_detection",
-        "model": "MLPBinaryClassifier",
+        "task": "multiclass_intrusion_detection",
+        "model": "MLPMultiClassClassifier",
         "input_dim": INPUT_DIM,
+        "num_classes": NUM_CLASSES,
         "batch_size": BATCH_SIZE,
         "epochs": EPOCHS,
         "learning_rate": LEARNING_RATE,
         "weight_decay": WEIGHT_DECAY,
-        "threshold": THRESHOLD,
-        "loss": "BCEWithLogitsLoss",
-        "pos_weight": pos_weight_value,
+        "loss": "CrossEntropyLoss",
+        "class_weights": class_weights.detach().cpu().numpy().tolist(),
         "device": str(device),
         "random_state": RANDOM_STATE,
     }
@@ -297,7 +286,7 @@ def main() -> None:
         json.dump(config, file, indent=2)
 
     history = []
-    best_val_f1 = -1.0
+    best_val_macro_f1 = -1.0
     best_model_path = MODELS_DIR / "central_mlp_best.pt"
 
     for epoch in range(1, EPOCHS + 1):
@@ -314,7 +303,6 @@ def main() -> None:
             loader=val_loader,
             criterion=criterion,
             device=device,
-
         )
 
         row = {
@@ -324,17 +312,20 @@ def main() -> None:
         }
         history.append(row)
 
-        # Select by validation F1; the held-out test set is not used in training.
-        if val_metrics["attack_f1"] > best_val_f1:
-            best_val_f1 = val_metrics["attack_f1"]
+        # Select by validation macro-F1; the held-out test set is not used in training.
+        if val_metrics["macro_f1"] > best_val_macro_f1:
+            best_val_macro_f1 = val_metrics["macro_f1"]
+            torch.save(model.state_dict(), best_model_path)
+
         print(
             f"epoch={epoch:02d} "
             f"train_loss={train_loss:.6f} "
             f"val_loss={val_metrics['loss']:.6f} "
-            f"val_attack_f1={val_metrics['attack_f1']:.4f} "
-            f"val_attack_recall={val_metrics['attack_recall']:.4f} "
-            f"val_attack_precision={val_metrics['attack_precision']:.4f} "
             f"val_macro_f1={val_metrics['macro_f1']:.4f} "
+            f"val_macro_recall={val_metrics['macro_recall']:.4f} "
+            f"val_recall_Exploits={val_metrics['recall_class_4']:.4f} "
+            f"val_recall_Shellcode={val_metrics['recall_class_8']:.4f} "
+            f"val_recall_Worms={val_metrics['recall_class_9']:.4f} "
         )
 
     history_df = pd.DataFrame(history)
@@ -342,37 +333,59 @@ def main() -> None:
 
     model.load_state_dict(torch.load(best_model_path, map_location=device))
 
-    test_metrics = evaluate(
-        model=model,
-        loader=test_loader,
-        criterion=criterion,
-        device=device,
-    )
+    # Final test evaluation on the best-validation checkpoint.
+    model.eval()
+    predictions = []
+    targets = []
+    with torch.no_grad():
+        for features, labels in test_loader:
+            features = features.to(device)
+            logits = model(features)
+            predictions.append(torch.argmax(logits, dim=1).cpu().numpy())
+            targets.append(labels.numpy())
+    y_pred = np.concatenate(predictions).astype(int)
+    y_true = np.concatenate(targets).astype(int)
 
+    test_metrics = evaluate(model, test_loader, criterion, device)
     pd.DataFrame([test_metrics]).to_csv(
-        RESULTS_DIR / "central_mlp_test_metrics.csv",
-        index=False,
+        RESULTS_DIR / "central_mlp_test_metrics.csv", index=False
     )
 
-    confusion_table = pd.DataFrame(
-        [
-            {
-                "tn": test_metrics["tn"],
-                "fp": test_metrics["fp"],
-                "fn": test_metrics["fn"],
-                "tp": test_metrics["tp"],
-            }
-        ]
+    labels_range = list(range(NUM_CLASSES))
+    report_dict = classification_report(
+        y_true,
+        y_pred,
+        labels=labels_range,
+        target_names=class_names,
+        zero_division=0,
+        output_dict=True,
     )
-    confusion_table.to_csv(
-        RESULTS_DIR / "central_mlp_test_confusion_matrix.csv",
-        index=False,
+    pd.DataFrame(report_dict).transpose().to_csv(
+        RESULTS_DIR / "central_mlp_test_classification_report.csv"
     )
 
-    print("\nBest validation F1:", round(best_val_f1, 6))
-    print("Test metrics:")
-    for key, value in test_metrics.items():
-        print(f"{key}: {value}")
+    confusion = confusion_matrix(y_true, y_pred, labels=labels_range)
+    pd.DataFrame(confusion, index=class_names, columns=class_names).to_csv(
+        RESULTS_DIR / "central_mlp_test_confusion_matrix.csv"
+    )
+
+    report_text = classification_report(
+        y_true,
+        y_pred,
+        labels=labels_range,
+        target_names=class_names,
+        zero_division=0,
+        digits=4,
+    )
+
+    print("\nBest validation macro-F1:", round(best_val_macro_f1, 6))
+    print("\n=== Test Classification Report ===")
+    print(report_text)
+    print("Test macro-F1:    ", round(test_metrics["macro_f1"], 6))
+    print("Test macro-recall:", round(test_metrics["macro_recall"], 6))
+    print("\nHigh-risk class recall (test):")
+    for name, class_id in HIGH_RISK_CLASSES.items():
+        print(f"  {name:10} (class {class_id}): recall = {test_metrics[f'recall_class_{class_id}']:.4f}")
 
 
 if __name__ == "__main__":

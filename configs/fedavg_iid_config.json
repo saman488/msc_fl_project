@@ -1,0 +1,19 @@
+{
+  "task": "binary_intrusion_detection",
+  "strategy": "fedavg",
+  "partition": "iid_stratified",
+  "model": "MLPBinaryClassifier",
+  "input_dim": 41,
+  "num_clients": 5,
+  "num_rounds": 1,
+  "local_epochs": 1,
+  "batch_size": 4096,
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "threshold": 0.5,
+  "loss": "BCEWithLogitsLoss",
+  "pos_weight": 24.146775478305305,
+  "aggregation": "sample_count_weighted",
+  "device": "mps",
+  "random_state": 42
+}

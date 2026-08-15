@@ -1,16 +1,27 @@
-# Python virtual environment
+# Python virtual environments
 env/
+.venv/
 
 # Python cache files
 __pycache__/
 *.py[cod]
 
+# Test/tool caches
+.pytest_cache/
+.mypy_cache/
+
 # macOS metadata
 .DS_Store
+
+# Local editor settings
+.vscode/
 
 # Raw, processed, and federated client data
 data/
 
 # Generated model artifacts
-models/*.pt
-models/*.joblib
+models/**/*.pt
+models/**/*.joblib
+
+# Generated runtime logs
+logs/

@@ -1,0 +1,6 @@
+,Benign,Analysis,Backdoor,DoS,Exploits,Fuzzers,Generic,Reconnaissance,Shellcode,Worms
+client_0,367,614,653,142,0,4,2966,8231,42,113
+client_1,0,992,99,575,21753,6775,6980,545,310,0
+client_2,1456,1,0,1672,3,87,0,168,646,1
+client_3,1114650,0,717,765,109,0,1645,0,0,0
+client_4,490181,2,50,902,220,8751,1,1,1,1

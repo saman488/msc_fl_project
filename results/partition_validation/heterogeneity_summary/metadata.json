@@ -1,0 +1,59 @@
+{
+  "grid": {
+    "K": [
+      5,
+      10,
+      20
+    ],
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "conditions": [
+      "iid",
+      "alpha_0p1",
+      "alpha_0p5",
+      "alpha_1p0"
+    ]
+  },
+  "class_order": [
+    "Benign",
+    "Analysis",
+    "Backdoor",
+    "DoS",
+    "Exploits",
+    "Fuzzers",
+    "Generic",
+    "Reconnaissance",
+    "Shellcode",
+    "Worms"
+  ],
+  "total_records": 1673191,
+  "sources": {
+    "k5": "actual final client index arrays; counts recomputed from y_train.npy",
+    "k10_k20": "existing client_count_sensitivity client_class_counts.csv (not regenerated)"
+  },
+  "formulas": {
+    "hellinger": "HD(p,q) = ||sqrt(p) - sqrt(q)||_2 / sqrt(2); range [0,1]",
+    "jsd_bits": "m=(p+q)/2; JSD = 0.5*KL2(p||m) + 0.5*KL2(q||m); log base 2 (bits); zero-probability terms contribute zero; this is a DIVERGENCE, not a distance; no square root is taken; range [0,1] bits",
+    "emd_discrete01": "categorical EMD with a 0/1 ground metric (same class cost 0, different class cost 1). Under this ground metric EMD equals total variation TV(p,q) = 0.5*sum|p-q|. Verified emd_discrete01 == TV within 1e-12."
+  },
+  "jsd_base": 2,
+  "no_class_ordering": "No ordering or numeric distance between attack class IDs is assumed; the EMD ground metric is purely categorical (0/1).",
+  "verification": {
+    "hd_fields_checked": [
+      "hd_pairwise_mean",
+      "hd_pairwise_min",
+      "hd_pairwise_max",
+      "hd_pairwise_rms",
+      "mean_client_to_global_hd",
+      "max_client_to_global_hd"
+    ],
+    "tolerance": 1e-10,
+    "checked_against": [
+      "results/partition_validation/client_count_sensitivity/summary.csv",
+      "results/fl_partitions/final_partitions/partition_summary.csv (K=5 only)"
+    ]
+  }
+}

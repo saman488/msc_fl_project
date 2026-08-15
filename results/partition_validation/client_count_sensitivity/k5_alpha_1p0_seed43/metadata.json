@@ -1,0 +1,66 @@
+{
+  "status": "OK",
+  "num_clients": 5,
+  "alpha": 1.0,
+  "partition_seed": 43,
+  "num_classes": 10,
+  "class_order": [
+    "Benign",
+    "Analysis",
+    "Backdoor",
+    "DoS",
+    "Exploits",
+    "Fuzzers",
+    "Generic",
+    "Reconnaissance",
+    "Shellcode",
+    "Worms"
+  ],
+  "total_records": 1673191,
+  "global_class_counts": [
+    1606654,
+    1609,
+    1519,
+    4056,
+    22085,
+    15617,
+    11592,
+    8945,
+    999,
+    115
+  ],
+  "client_sizes": [
+    244810,
+    213435,
+    204644,
+    227056,
+    783246
+  ],
+  "client_to_global_hd": [
+    0.07492300815900378,
+    0.038244746240883254,
+    0.07479514481220155,
+    0.06644557637326191,
+    0.04709205731273047
+  ],
+  "absent_classes_per_client": [
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "hd_pairwise_mean": 0.09465152786310377,
+  "hd_pairwise_min": 0.049844757374909655,
+  "hd_pairwise_max": 0.13068743993757848,
+  "hd_pairwise_rms": 0.09738686789018539,
+  "mean_client_to_global_hd": 0.060300106579616194,
+  "max_client_to_global_hd": 0.07492300815900378,
+  "size_min": 204644,
+  "size_max": 783246,
+  "size_mean": 334638.2,
+  "size_std": 224713.46253253275,
+  "size_cv": 0.6715116879439728,
+  "size_max_min_ratio": 3.8273587302828327,
+  "mean_absent_classes_per_client": 0.2
+}

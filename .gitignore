@@ -25,3 +25,7 @@ models/**/*.joblib
 
 # Generated runtime logs
 logs/
+
+# Generated FedArtML client partitions
+fedartml_clean/partitions/
+fedartml_clean/d2_partitions/

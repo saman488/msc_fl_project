@@ -35,3 +35,7 @@ archive/nf_cse_cic_ids2018_v2/preprocessing_before_scaled_clip_20260815_115344/
 
 # Temporary process ID files
 fedartml_clean/*.pid
+
+# Generated experiment logs
+fedartml_clean/*.log
+fedartml_clean/d2_calibration_logs/

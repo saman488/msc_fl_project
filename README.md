@@ -13,6 +13,15 @@ The project uses:
 - **NF-UNSW-NB15-v2**
 - **NF-CSE-CIC-IDS2018-v2**
 
+## Data Sources
+
+Raw datasets are not redistributed in this repository.
+
+- **NF-UNSW-NB15-v2** — University of Queensland — https://doi.org/10.48610/FFBB0C1
+- **NF-CSE-CIC-IDS2018-v2** — University of Queensland — https://doi.org/10.48610/E9636B7
+
+Both datasets are part of the University of Queensland Machine Learning-Based NIDS dataset collection.
+
 ## Experiment 1 — Baseline Federated Learning Study
 
 The main federated learning study evaluates **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.

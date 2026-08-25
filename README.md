@@ -65,29 +65,105 @@ Install the recorded dependencies with `python3 -m pip install -r requirements.t
 
 FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
 
-## Main Entry Points — Label Skew Study
+## Reproducing the Label Skew Study
+
+The Label Skew Study builds on the preprocessing and IID partitioning used in the baseline study.
 
 ### Dataset 1
 
-Train a FedAvg matrix for a selected partition seed:
+Prepare the dataset and baseline IID partitions:
 
-`python3 fedartml_clean/04_run_d1_fedavg_matrix.py --partition-seed <seed>`
+`python3 03_preprocess.py`
 
-Run held-out test evaluation for selected seeds:
+`python3 30_build_dataset1_37feature_branch.py`
 
-`python3 fedartml_clean/09_evaluate_d1_clean_test.py --seeds <seed1> <seed2> --execute-test`
+`python3 25_create_final_partitions.py`
+
+Copy the baseline IID partitions into the Label Skew study layout:
+
+`python3 fedartml_clean/00_prepare_iid_partitions.py`
+
+Generate the non-IID partitions:
+
+`python3 fedartml_clean/02_write_fedartml_partition.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_hd0p5.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_hd0p75.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_hd0p9.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_seed43_hd0p25.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_seed43_hd0p5.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_seed43_hd0p75.py`
+
+`python3 fedartml_clean/02_write_fedartml_partition_seed43_hd0p9.py`
+
+Run the initial FedAvg matrices:
+
+`python3 fedartml_clean/04_run_d1_fedavg_matrix.py --partition-seed 42`
+
+`python3 fedartml_clean/04_run_d1_fedavg_matrix.py --partition-seed 43`
+
+Continue the runs to 100 communication rounds:
+
+`python3 fedartml_clean/06_extend_d1_fedavg_rounds.py --partition-seed 42 --end-round 100 --extension-root fedartml_clean/convergence_extension_100/seed_42`
+
+`python3 fedartml_clean/06_extend_d1_fedavg_rounds.py --partition-seed 43 --end-round 100 --source-results-root fedartml_clean/results/seed_43 --source-models-root fedartml_clean/models/seed_43 --primary-results-root fedartml_clean/results/seed_43 --extension-root fedartml_clean/convergence_extension_100/seed_43`
+
+Run the held-out test evaluation:
+
+`python3 fedartml_clean/09_evaluate_d1_clean_test.py --seeds 42 43 --execute-test`
 
 ### Dataset 2
 
-Train a FedAvg matrix for partition seed 42 or 43:
+Prepare the dataset and baseline IID partitions:
 
-`python3 fedartml_clean/d2_03a_run_fedavg_matrix.py --partition-seed <42|43>`
+`python3 d2_01_preprocess_nf_cse_cic_ids2018_v2.py`
 
-Run held-out test evaluation for selected seeds:
+`python3 d2_02_create_final_partitions.py`
 
-`python3 fedartml_clean/d2_09_evaluate_clean_test.py --seeds <seed1> <seed2> --execute-test`
+Prepare the IID study directories:
 
-Use `--help` on each script for the complete set of supported options.
+`python3 fedartml_clean/00_prepare_iid_partitions.py`
+
+Generate the non-IID partitions:
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_hd0p75.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_hd0p90.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_seed43_hd0p25.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_seed43_hd0p5.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_seed43_hd0p75.py`
+
+`python3 fedartml_clean/d2_02_write_fedartml_partition_seed43_hd0p90.py`
+
+Run the initial FedAvg matrices:
+
+`python3 fedartml_clean/d2_03a_run_fedavg_matrix.py --partition-seed 42`
+
+`python3 fedartml_clean/d2_03a_run_fedavg_matrix.py --partition-seed 43`
+
+Continue the runs to 100 communication rounds:
+
+`python3 fedartml_clean/d2_04_extend_fedavg_rounds.py --partition-seed 42 --end-round 100 --extension-root fedartml_clean/d2_convergence_extension_100/seed_42`
+
+`python3 fedartml_clean/d2_04_extend_fedavg_rounds.py --partition-seed 43 --end-round 100 --source-results-root fedartml_clean/d2_results/seed_43 --source-models-root fedartml_clean/d2_models/seed_43 --primary-results-root fedartml_clean/d2_results/seed_43 --extension-root fedartml_clean/d2_convergence_extension_100/seed_43`
+
+Run the held-out test evaluation:
+
+`python3 fedartml_clean/d2_09_evaluate_clean_test.py --seeds 42 43 --execute-test`
+
+### Included Final Outputs
+
+The repository includes the final 100-round histories and checkpoints for both datasets, together with held-out test results, per-class results, confusion matrices, checkpoint-selection records, and attack-detection summaries.
 
 ## Author
 

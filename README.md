@@ -43,6 +43,12 @@ The held-out test data is kept separate from training and model selection and is
 
 The experiment examines how the three federated optimisation methods behave as client data heterogeneity changes under a controlled experimental setup.
 
+## Experiment 2 — Label Skew Study
+
+This study examines FedAvg under different levels of client label skew on both dissertation datasets.
+
+The IID condition reuses the baseline IID partitions. Non-IID partitions are generated using FedArtML, with client heterogeneity measured using Hellinger distance. The study uses multiple partition seeds and separate held-out test evaluation.
+
 ## Environment
 
 The development environment used for the dissertation was:

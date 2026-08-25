@@ -57,6 +57,8 @@ The development environment used for the dissertation was:
 
 Install the recorded dependencies with `python3 -m pip install -r requirements.txt`.
 
+FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
+
 ## Main Entry Points — Label Skew Study
 
 ### Dataset 1

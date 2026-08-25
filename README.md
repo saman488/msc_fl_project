@@ -57,7 +57,7 @@ The development environment used for the dissertation was:
 
 Install the recorded dependencies with `python3 -m pip install -r requirements.txt`.
 
-## Main Entry Points — FedArtML Study
+## Main Entry Points — Label Skew Study
 
 ### Dataset 1
 

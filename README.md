@@ -55,7 +55,31 @@ The development environment used for the dissertation was:
 - Matplotlib 3.11.1
 - FedArtML 0.1.34
 
-Install the recorded dependencies with `pip install -r requirements.txt`.
+Install the recorded dependencies with `python3 -m pip install -r requirements.txt`.
+
+## Main Entry Points — FedArtML Study
+
+### Dataset 1
+
+Train a FedAvg matrix for a selected partition seed:
+
+`python3 fedartml_clean/04_run_d1_fedavg_matrix.py --partition-seed <seed>`
+
+Run held-out test evaluation for selected seeds:
+
+`python3 fedartml_clean/09_evaluate_d1_clean_test.py --seeds <seed1> <seed2> --execute-test`
+
+### Dataset 2
+
+Train a FedAvg matrix for partition seed 42 or 43:
+
+`python3 fedartml_clean/d2_03a_run_fedavg_matrix.py --partition-seed <42|43>`
+
+Run held-out test evaluation for selected seeds:
+
+`python3 fedartml_clean/d2_09_evaluate_clean_test.py --seeds <seed1> <seed2> --execute-test`
+
+Use `--help` on each script for the complete set of supported options.
 
 ## Author
 

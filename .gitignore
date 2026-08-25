@@ -29,3 +29,6 @@ logs/
 # Generated FedArtML client partitions
 fedartml_clean/partitions/
 fedartml_clean/d2_partitions/
+
+# Large historical preprocessing snapshot
+archive/nf_cse_cic_ids2018_v2/preprocessing_before_scaled_clip_20260815_115344/

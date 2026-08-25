@@ -43,6 +43,20 @@ The held-out test data is kept separate from training and model selection and is
 
 The experiment examines how the three federated optimisation methods behave as client data heterogeneity changes under a controlled experimental setup.
 
+## Environment
+
+The development environment used for the dissertation was:
+
+- Python 3.14.2
+- NumPy 2.4.6
+- pandas 3.0.3
+- PyTorch 2.12.0
+- scikit-learn 1.9.0
+- Matplotlib 3.11.1
+- FedArtML 0.1.34
+
+Install the recorded dependencies with `pip install -r requirements.txt`.
+
 ## Author
 
 Saman

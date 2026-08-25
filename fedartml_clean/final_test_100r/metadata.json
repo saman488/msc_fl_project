@@ -1,0 +1,18 @@
+{
+  "dataset": "D1",
+  "representation": "37f",
+  "evaluation": "final_held_out_test",
+  "partition_seeds": [
+    42,
+    43
+  ],
+  "training_seed": 42,
+  "communication_round_budget": 100,
+  "model_selection": "best validation macro-F1 within fixed 100-round budget",
+  "n_models": 10,
+  "processed_dir": "/Users/zobeiry/Documents/-MSc-dataScience-qmul/Project/msc_fl_project/data/processed_37f",
+  "x_test_sha256": "844712c303f7dfebb1ae2fbf920c2fa647147d63952fce6ea89e9eb39ee2ea32",
+  "y_test_sha256": "c459b80f3cb1646223a9c0f8316cd322bb2aa0ed7dcbecd3d35c0a12be3dc380",
+  "test_rows": 358542,
+  "test_access_rule": "test loaded only after all 10 model selections passed preflight"
+}

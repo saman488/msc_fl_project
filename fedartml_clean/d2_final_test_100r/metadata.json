@@ -1,0 +1,18 @@
+{
+  "dataset": "D2",
+  "representation": "36f",
+  "evaluation": "final_held_out_test",
+  "partition_seeds": [
+    42,
+    43
+  ],
+  "training_seed": 42,
+  "communication_round_budget": 100,
+  "model_selection": "best validation macro-F1 within fixed 100-round budget",
+  "n_models": 9,
+  "processed_dir": "/workspace/msc_fl_project/data/nf_cse_cic_ids2018_v2/processed",
+  "x_test_sha256": "fd4928fd7213728bcd9cea17881195cac31589c6e95ecb5c7a61135e666559ca",
+  "y_test_sha256": "5705d4fefbf836a527702984126f5898dfe579426ce0c943dfafb3b17b9fd2a4",
+  "test_rows": 2817634,
+  "test_access_rule": "test loaded only after all locked D2 model selections passed preflight"
+}

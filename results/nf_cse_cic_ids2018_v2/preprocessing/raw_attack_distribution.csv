@@ -1,0 +1,16 @@
+raw_label,count,parent_class
+Benign,16635567,Benign
+Bot,143097,Bot
+Brute Force -Web,2143,Web Attacks
+Brute Force -XSS,927,Web Attacks
+DDOS attack-HOIC,1080858,DDoS
+DDOS attack-LOIC-UDP,2112,DDoS
+DDoS attacks-LOIC-HTTP,307300,DDoS
+DoS attacks-GoldenEye,27723,DoS
+DoS attacks-Hulk,432648,DoS
+DoS attacks-SlowHTTPTest,14116,DoS
+DoS attacks-Slowloris,9512,DoS
+FTP-BruteForce,25933,BruteForce
+Infilteration,116361,Infiltration
+SQL Injection,432,Web Attacks
+SSH-Bruteforce,94979,BruteForce

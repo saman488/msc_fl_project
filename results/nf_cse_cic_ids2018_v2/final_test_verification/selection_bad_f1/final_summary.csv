@@ -1,0 +1,13 @@
+method,partition_seed,condition,best_round,best_val_macro_f1
+FedAvg,42,iid,5,0.9
+FedAvg,42,alpha_0p1,6,0.9
+FedAvg,42,alpha_0p5,7,0.9
+FedAvg,42,alpha_1p0,8,0.9
+FedAvg,43,iid,6,0.9
+FedAvg,43,alpha_0p1,7,0.9
+FedAvg,43,alpha_0p5,8,0.123
+FedAvg,43,alpha_1p0,9,0.9
+FedAvg,44,iid,7,0.9
+FedAvg,44,alpha_0p1,8,0.9
+FedAvg,44,alpha_0p5,9,0.9
+FedAvg,44,alpha_1p0,10,0.9

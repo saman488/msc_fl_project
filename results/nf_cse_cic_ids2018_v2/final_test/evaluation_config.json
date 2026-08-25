@@ -1,0 +1,31 @@
+{
+  "dataset": "nf_cse_cic_ids2018_v2",
+  "evaluation": "final_held_out_test",
+  "model_selection": "validation macro-F1 only; test never used for selection",
+  "n_models": 37,
+  "models_by_algorithm": {
+    "FedAvg": 12,
+    "FedProx": 12,
+    "SCAFFOLD": 12,
+    "Centralised": 1
+  },
+  "input_dim": 36,
+  "num_classes": 7,
+  "class_names": [
+    "Benign",
+    "Bot",
+    "BruteForce",
+    "DDoS",
+    "DoS",
+    "Infiltration",
+    "Web Attacks"
+  ],
+  "batch_size": 4096,
+  "device": "mps",
+  "test_rows": 2817634,
+  "processed_dir": "data/nf_cse_cic_ids2018_v2/processed",
+  "script_sha256": "a9d93ce24bade9e48719790b71a1f164d5ba5fdc7b744072d90d9b7b863681ed",
+  "python_version": "3.14.2",
+  "torch_version": "2.12.0",
+  "git_commit": "582319a6b69681952db876765bc778e5fcfb7549"
+}

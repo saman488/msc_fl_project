@@ -1,0 +1,8 @@
+true,Benign,Bot,BruteForce,DDoS,DoS,Infiltration,Web Attacks
+Benign,2487885,6,53,49,59,12,7271
+Bot,31,6155,0,0,0,0,0
+BruteForce,0,0,18137,0,0,0,0
+DDoS,0,0,0,208540,0,0,0
+DoS,6427,0,4860,0,61313,0,0
+Infiltration,15157,179,0,0,0,969,6
+Web Attacks,11,0,0,501,0,0,13

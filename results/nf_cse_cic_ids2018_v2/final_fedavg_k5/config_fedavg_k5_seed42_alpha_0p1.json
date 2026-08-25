@@ -1,0 +1,107 @@
+{
+  "method": "FedAvg",
+  "dataset": "nf_cse_cic_ids2018_v2",
+  "input_dim": 36,
+  "num_classes": 7,
+  "K": 5,
+  "partition_seed": 42,
+  "condition": "alpha_0p1",
+  "training_seed": 42,
+  "num_clients": 5,
+  "client_sizes": [
+    474518,
+    5238780,
+    863512,
+    123768,
+    6554433
+  ],
+  "client_class_counts": [
+    [
+      0,
+      8656,
+      80109,
+      129199,
+      254413,
+      0,
+      2141
+    ],
+    [
+      5128129,
+      62915,
+      742,
+      17,
+      0,
+      46976,
+      1
+    ],
+    [
+      1,
+      2,
+      360,
+      843494,
+      19475,
+      0,
+      180
+    ],
+    [
+      0,
+      59151,
+      3426,
+      0,
+      27948,
+      33243,
+      0
+    ],
+    [
+      6516767,
+      1,
+      1,
+      480,
+      36963,
+      91,
+      130
+    ]
+  ],
+  "aggregation": "sample_weighted_fedavg",
+  "aggregation_weights": [
+    0.035799140415651104,
+    0.39523015107267734,
+    0.06514607947137879,
+    0.009337449814262697,
+    0.4944871792260301
+  ],
+  "batch_size": 4096,
+  "local_epochs": 1,
+  "optimizer": "SGD",
+  "lr": 0.1,
+  "momentum": 0.0,
+  "weight_decay": 0.0,
+  "max_rounds": 40,
+  "best_round": 35,
+  "best_val_macro_f1": 0.5763334381303559,
+  "best_checkpoint_reloaded_val_macro_f1": 0.5763334381303559,
+  "class_weights": [
+    0.16260968148708344,
+    14.485163688659668,
+    22.372610092163086,
+    1.9457381963729858,
+    5.589075088500977,
+    23.578296661376953,
+    772.2565307617188
+  ],
+  "selection_metric": "val_macro_f1",
+  "processed_dir": "data/nf_cse_cic_ids2018_v2/processed",
+  "partition_root": "data/nf_cse_cic_ids2018_v2/fl_clients/final_partitions/k_5",
+  "initial_state_path": "models/nf_cse_cic_ids2018_v2/final_fedavg_k5/initial_global_model.pt",
+  "best_checkpoint_path": "models/nf_cse_cic_ids2018_v2/final_fedavg_k5/best_fedavg_k5_seed42_alpha_0p1.pt",
+  "final_checkpoint_path": "models/nf_cse_cic_ids2018_v2/final_fedavg_k5/final_fedavg_k5_seed42_alpha_0p1.pt",
+  "partition_path": "data/nf_cse_cic_ids2018_v2/fl_clients/final_partitions/k_5/seed_42/alpha_0p1",
+  "device": "cuda",
+  "cuda_available": true,
+  "mps_available": false,
+  "python_version": "3.12.3",
+  "torch_version": "2.8.0+cu128",
+  "git_commit": null,
+  "git_dirty": null,
+  "script_sha256": "7c9175da360432088c0e4ad33930eeb125af4a7624b88a83e05fa8fc22cab61e"
+}

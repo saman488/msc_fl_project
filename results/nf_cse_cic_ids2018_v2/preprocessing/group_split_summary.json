@@ -1,0 +1,115 @@
+{
+  "group_hash_method": "pd.util.hash_pandas_object(chunk[FEATURE_COLUMNS], index=False) -> uint64",
+  "seed": 42,
+  "num_unique_hash_groups": 8966356,
+  "num_repeated_groups": 794005,
+  "rows_in_repeated_groups": 10721357,
+  "num_mixed_label_groups": 1940,
+  "rows_in_mixed_label_groups": 446176,
+  "largest_group_size": 398419,
+  "target_split_counts_by_class": {
+    "train": {
+      "Benign": 11644897,
+      "Bot": 100167,
+      "BruteForce": 84638,
+      "DDoS": 973190,
+      "DoS": 338799,
+      "Infiltration": 81453,
+      "Web Attacks": 2452
+    },
+    "validation": {
+      "Benign": 2495335,
+      "Bot": 21465,
+      "BruteForce": 18137,
+      "DDoS": 208540,
+      "DoS": 72600,
+      "Infiltration": 17454,
+      "Web Attacks": 525
+    },
+    "test": {
+      "Benign": 2495335,
+      "Bot": 21465,
+      "BruteForce": 18137,
+      "DDoS": 208540,
+      "DoS": 72600,
+      "Infiltration": 17454,
+      "Web Attacks": 525
+    }
+  },
+  "achieved_split_counts_by_class": {
+    "train": {
+      "Benign": 11644897,
+      "Bot": 130725,
+      "BruteForce": 84638,
+      "DDoS": 973190,
+      "DoS": 338799,
+      "Infiltration": 80310,
+      "Web Attacks": 2452
+    },
+    "validation": {
+      "Benign": 2495335,
+      "Bot": 6186,
+      "BruteForce": 18137,
+      "DDoS": 208540,
+      "DoS": 72600,
+      "Infiltration": 19740,
+      "Web Attacks": 525
+    },
+    "test": {
+      "Benign": 2495335,
+      "Bot": 6186,
+      "BruteForce": 18137,
+      "DDoS": 208540,
+      "DoS": 72600,
+      "Infiltration": 16311,
+      "Web Attacks": 525
+    }
+  },
+  "achieved_overall_proportions": {
+    "train": 0.7015568886742612,
+    "validation": 0.14931230015833843,
+    "test": 0.1491308111674003
+  },
+  "per_class_achieved_proportions": {
+    "Benign": {
+      "train": 0.7000000060112168,
+      "validation": 0.1499999969943916,
+      "test": 0.1499999969943916
+    },
+    "Bot": {
+      "train": 0.9135411643849976,
+      "validation": 0.043229417807501204,
+      "test": 0.043229417807501204
+    },
+    "BruteForce": {
+      "train": 0.6999966918089189,
+      "validation": 0.15000165409554056,
+      "test": 0.15000165409554056
+    },
+    "DDoS": {
+      "train": 0.7000007192847433,
+      "validation": 0.14999964035762836,
+      "test": 0.14999964035762836
+    },
+    "DoS": {
+      "train": 0.6999993801640086,
+      "validation": 0.1500003099179957,
+      "test": 0.1500003099179957
+    },
+    "Infiltration": {
+      "train": 0.6901796993838142,
+      "validation": 0.16964446850748963,
+      "test": 0.14017583210869622
+    },
+    "Web Attacks": {
+      "train": 0.7001713306681896,
+      "validation": 0.1499143346659052,
+      "test": 0.1499143346659052
+    }
+  },
+  "group_overlap_zero": true,
+  "all_classes_present_in_all_splits": true,
+  "zero_group_overlap_assertion": "each feature-hash group is assigned to exactly one split (enforced by construction and validated)",
+  "all_classes_present_assertion": "all seven classes occur in all three splits (validated)",
+  "split_assignment_algorithm": "Feature-hash group-disjoint split. Groups are exact uint64 hashes of the 36 float64 feature values; every row with the same hash shares one split. A single np.random.default_rng(42).permutation over all groups provides a per-group tie key used as the secondary ordering key throughout. Per-class integer targets: val=round(0.15*total), test=round(0.15*total), train=total-val-test. Assignment order: (A) mixed-label groups by descending size, then the seed-42 tie key, then ascending group hash, each placed into the split minimising the normalised squared deviation over the full 3x7 split/class matrix, exact ties resolved train<validation<test; (B) pure repeated groups (size>1) per class by descending size, then the seed-42 tie key, then ascending hash, placed to minimise that class's normalised squared deviation, ties train<validation<test; (C) singleton groups per class ordered by the seed-42 tie key then ascending hash, filling positive per-split class deficits largest-first (ties train<validation<test), then remaining singletons to the split with the lowest assigned/target ratio (ties train<validation<test). Seed 42 governs the deterministic tie ordering; the final tie order is always ascending uint64 group hash."
+}

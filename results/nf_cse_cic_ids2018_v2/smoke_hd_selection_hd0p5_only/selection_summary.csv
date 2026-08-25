@@ -1,0 +1,4 @@
+directory_label,condition,target_hd,achieved_hd_rms,achieved_hd_pairwise_mean,abs_error_vs_target,generating_seed,alpha,partition_id,absent_cells,size_min,size_max,size_max_min_ratio,path
+seed_1,iid,0.0,7.715325572827813e-06,6.374971682146259e-06,7.715325572827813e-06,42,,k5_seed42_iid,0,2651000,2651004,1.0000015088645795,data/nf_cse_cic_ids2018_v2/fl_clients/hd_selected_partitions/k_5/seed_1/iid
+seed_2,iid,0.0,7.715325572827813e-06,6.374971682146259e-06,7.715325572827813e-06,43,,k5_seed43_iid,0,2651000,2651004,1.0000015088645795,data/nf_cse_cic_ids2018_v2/fl_clients/hd_selected_partitions/k_5/seed_2/iid
+seed_3,iid,0.0,7.715325572827813e-06,6.374971682146259e-06,7.715325572827813e-06,44,,k5_seed44_iid,0,2651000,2651004,1.0000015088645795,data/nf_cse_cic_ids2018_v2/fl_clients/hd_selected_partitions/k_5/seed_3/iid

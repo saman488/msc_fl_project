@@ -1,0 +1,10 @@
+excluded_column,reason
+IPV4_SRC_ADDR,Endpoint identifier; shortcut-learning risk.
+IPV4_DST_ADDR,Endpoint identifier; shortcut-learning risk.
+L4_SRC_PORT,Endpoint/service identifier used in source-event matching; shortcut-learning risk.
+L4_DST_PORT,Endpoint/service identifier used in source-event matching; shortcut-learning risk.
+SRC_TO_DST_SECOND_BYTES,Verified invalid extreme values in the official checksum-valid CSV; 250 values exceed float32 range.
+DST_TO_SRC_SECOND_BYTES,Verified invalid extreme values in the official checksum-valid CSV; 5 values exceed float32 range.
+FTP_COMMAND_RET_CODE,"Exactly zero for all 18,893,708 rows; zero variance and no information."
+Label,Binary target; never a model input.
+Attack,Source of the multi-class target; never a model input.

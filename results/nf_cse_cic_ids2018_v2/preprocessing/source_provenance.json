@@ -1,0 +1,16 @@
+{
+  "official_url": "https://rdm.uq.edu.au/files/ce5161d0-ef9c-11ed-827d-e762de186848",
+  "doi": "10.48610/E9636B7",
+  "source_organization": "University of Queensland",
+  "creator": "Mr Mohanad Sarhan",
+  "licence_text": "Permitted Re-Use with Commercial Use Restriction",
+  "package_filename": "b3427ed8ad063a09_MOHANAD_A4706.zip",
+  "package_identifier": "b3427ed8ad063a09_MOHANAD_A4706",
+  "download_date": "2026-08-11",
+  "package_zip_sha256": "ad6307995d08ff8825d0193d5a1cfa61cf3dc4c6f223962ba3762a7775b5dc24",
+  "raw_csv_path": "data/nf_cse_cic_ids2018_v2/raw/b3427ed8ad063a09_MOHANAD_A4706/data/NF-CSE-CIC-IDS2018-v2.csv",
+  "raw_csv_size_bytes": 3221378977,
+  "raw_csv_sha1": "80ff7fd07e2bc31164197f07fe9d9606ee565f9a",
+  "feature_definition_path": "data/nf_cse_cic_ids2018_v2/raw/b3427ed8ad063a09_MOHANAD_A4706/data/NetFlow_v2_Features.csv",
+  "feature_definition_sha1": "6cf84d2d76c29321175d9429996d7cda2f3b15d6"
+}

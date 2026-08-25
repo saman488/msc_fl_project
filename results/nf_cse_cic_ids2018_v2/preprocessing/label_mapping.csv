@@ -1,0 +1,8 @@
+class_id,parent_class
+0,Benign
+1,Bot
+2,BruteForce
+3,DDoS
+4,DoS
+5,Infiltration
+6,Web Attacks

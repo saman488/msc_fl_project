@@ -1,0 +1,125 @@
+{
+  "artifacts": [
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/X_test.npy",
+      "size_bytes": 405739424,
+      "sha256": "fd4928fd7213728bcd9cea17881195cac31589c6e95ecb5c7a61135e666559ca"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/X_train.npy",
+      "size_bytes": 1908721712,
+      "sha256": "942738c955a92c6a0f4d3646a29d9f96de4ac36fd01db98eff7b0c6cebd16e18"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/X_val.npy",
+      "size_bytes": 406233200,
+      "sha256": "78bb85bf2c7158dfae5b1fc2c6a53ada4e820bfead24b5d92c359f1171b33ebd"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/raw_indices_test.npy",
+      "size_bytes": 22541200,
+      "sha256": "1e60018bde4dd255cedc92e02098b74d3afdbdb7a6ba2d7f8386c3e4aca83f6c"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/raw_indices_train.npy",
+      "size_bytes": 106040216,
+      "sha256": "330e4c862bb125af2d3a5c455e362785a6dbff1d6f11695a90fbba2d6ee0b597"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/raw_indices_val.npy",
+      "size_bytes": 22568632,
+      "sha256": "5e1f5743abdc261ae907699e4f142f1f1e877752c5fb71bd2b64a6f4b04098c8"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/y_test.npy",
+      "size_bytes": 22541200,
+      "sha256": "5705d4fefbf836a527702984126f5898dfe579426ce0c943dfafb3b17b9fd2a4"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/y_train.npy",
+      "size_bytes": 106040216,
+      "sha256": "31ee83b9fb95b1230179cc17cfabcb809bf3cfbdcc8f9be05ff450e622c34920"
+    },
+    {
+      "path": "data/nf_cse_cic_ids2018_v2/processed/y_val.npy",
+      "size_bytes": 22568632,
+      "sha256": "aa76008d03b1fc6c7f9b334636ad3ea2ec8d0c973141fb373ed3d30030f9cb08"
+    },
+    {
+      "path": "models/nf_cse_cic_ids2018_v2/standard_scaler.joblib",
+      "size_bytes": 1447,
+      "sha256": "1a4f20f6c93204108c896221b44190efd6b4861a3e0b8c6262df9a62b34e7bbd"
+    },
+    {
+      "path": "configs/nf_cse_cic_ids2018_v2/label_mapping.json",
+      "size_bytes": 114,
+      "sha256": "95c647e702ded3d95b95a0cce8bb4d6ab61b67ab5c7c95a1ead0b4b3a6c1190e"
+    },
+    {
+      "path": "configs/nf_cse_cic_ids2018_v2/preprocessing_config.json",
+      "size_bytes": 6508,
+      "sha256": "bac0f992515661de858c871ca33d7f3944a352b9c169c3714c21d6194017412e"
+    },
+    {
+      "path": "configs/nf_cse_cic_ids2018_v2/raw_to_parent_mapping.json",
+      "size_bytes": 485,
+      "sha256": "458c29a50ee2d4a9382606b78a317f0055a242bc6129cf777c0f988df40d47d4"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/class_distribution.csv",
+      "size_bytes": 1416,
+      "sha256": "8ca432cce8cfd32655db38ecc264404d1c44c000beb30df8d6524f6e6fac27d8"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/excluded_columns.csv",
+      "size_bytes": 778,
+      "sha256": "d8d1f2d4c89f0d7f3a78ecc650b00a56caa495c060c0fd4dacf3c584d7ff8d95"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/feature_columns.csv",
+      "size_bytes": 721,
+      "sha256": "ff91e958806a5cdfb4195a926bf4cefbdc72dade6c1d9b66013dbae5532fbd31"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/group_split_summary.json",
+      "size_bytes": 4258,
+      "sha256": "f85960b0552aaef1c39341a1c751c7fa365d9d55df60a9d85fee67488634d687"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/label_mapping.csv",
+      "size_bytes": 92,
+      "sha256": "7a53cae00c62eeefb997222f6ea6026d039742739f25bdde13b7283bbea4c26a"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/raw_attack_distribution.csv",
+      "size_bytes": 484,
+      "sha256": "8125a36c6a3fce121be9774e04a33d89b3981068dd703c3621f5fc39f52179be"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/scaled_clipping_summary.csv",
+      "size_bytes": 9035,
+      "sha256": "b44a1108b834a19fa224b307d81272a867fe83e9b985575d3323c55824742b06"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/scaled_clipping_summary.json",
+      "size_bytes": 5098,
+      "sha256": "f6f09b15b8f8ecc4be1f09d2ac6b243c44785464b5a2c01724bf86e805f79d05"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/scaler_summary.csv",
+      "size_bytes": 3097,
+      "sha256": "da8a69932c51fa3c04fda4aad787e9da0abee651d8b8a207e566cca18c7c6499"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/source_provenance.json",
+      "size_bytes": 925,
+      "sha256": "21dc38fa060d54aaf59270ba46b3d343fba7e0c703e93f185c4fc2c9a0ecb42b"
+    },
+    {
+      "path": "results/nf_cse_cic_ids2018_v2/preprocessing/split_summary.csv",
+      "size_bytes": 241,
+      "sha256": "30478ea6a0f4a23e98845ce86f9cceb7156209d3d9f88f7621a9a87ea642b286"
+    }
+  ],
+  "count": 24
+}

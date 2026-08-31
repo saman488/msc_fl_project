@@ -49,6 +49,16 @@ This study examines FedAvg under different levels of client label skew on both d
 
 The IID condition reuses the baseline IID partitions. Non-IID partitions are generated using FedArtML, with client heterogeneity measured using Hellinger distance. The study uses multiple partition seeds and separate held-out test evaluation.
 
+## Inspecting the Label Skew Study Structure
+
+The following optional command displays the organisation of the Label Skew Study code and final outputs:
+
+```bash
+tree -L 2 fedartml_clean -I "*.log|*.pid|__pycache__|convergence_extension|convergence_extension_80|d2_calibration_logs|models|results|d2_models|d2_results|partitions|d2_partitions|paper_analysis|paper_data|paper_figures"
+```
+
+It shows the Dataset 1 and Dataset 2 partition-generation, FedAvg training and evaluation scripts, together with the final 100-round checkpoint and held-out test-output directories, while hiding logs, PID files, caches and intermediate directories.
+
 ## Environment
 
 The development environment used for the dissertation was:

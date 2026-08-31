@@ -129,6 +129,60 @@ For each run, the checkpoint with the highest validation Macro-F1 is selected be
 
 `python3 fedartml_clean/09_evaluate_d1_clean_test.py --seeds 42 43 --execute-test`
 
+### D1 heterogeneity diagnostics
+
+**Step 1 — Diagnostic script**
+
+The D1 partition diagnostics are carried out by:
+
+`fedartml_clean/05_d1_partition_diagnostics.py`
+
+This script examines the D1 FedArtML partitions after they have been created.
+
+**Step 2 — Files used by the diagnostic script**
+
+The D1 FedArtML partitions are stored under:
+
+`fedartml_clean/partitions/k_5/`
+
+The corresponding D1 training labels are loaded from:
+
+`data/processed_37f/y_train.npy`
+
+**Step 3 — Heterogeneity calculations**
+
+`fedartml_clean/05_d1_partition_diagnostics.py` calls the Python function `condition_metrics()` defined inside the root-level file:
+
+`28_build_heterogeneity_summary.py`
+
+The `condition_metrics()` function takes the class counts for the five clients and the overall D1 class totals, converts the counts into class proportions, and calculates the heterogeneity statistics.
+
+**Step 4 — Statistics calculated by `condition_metrics()`**
+
+The `condition_metrics()` function calculates:
+
+- pairwise Hellinger Distance
+- pairwise HD-RMS
+- Jensen–Shannon divergence
+- total variation
+- client-to-global distances
+- client-size statistics
+- missing-class counts
+
+**Step 5 — FedArtML calculations in the diagnostic script**
+
+`fedartml_clean/05_d1_partition_diagnostics.py` also directly imports `hellinger_distance()` and `jensen_shannon_distance()` from:
+
+`fedartml.function_base`
+
+These FedArtML functions calculate the Hellinger and Jensen–Shannon values from the same D1 partition class proportions. The Hellinger value is also checked against the value stored with the partition.
+
+**Step 6 — Connection to the earlier root-level file**
+
+Only the `condition_metrics()` function from `28_build_heterogeneity_summary.py` is called by `fedartml_clean/05_d1_partition_diagnostics.py`.
+
+Other parts of `28_build_heterogeneity_summary.py`, including `k5_counts()`, `sensitivity_counts()` and its `main()` workflow, remain part of the earlier root-level experiment code and are separate from this D1 diagnostics step.
+
 ### Dataset 2
 
 Prepare the dataset and baseline IID partitions:

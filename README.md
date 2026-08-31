@@ -24,7 +24,7 @@ Both datasets are part of the University of Queensland Machine Learning-Based NI
 
 ## Experiment 1 — Baseline Federated Learning Study
 
-The main federated learning study evaluates **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.
+Earlier baseline experiments evaluated **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.
 
 For each dataset, training data is partitioned across five federated clients. The study includes an IID condition and fixed Dirichlet non-IID conditions, with multiple partition seeds used to avoid basing the comparison on a single client allocation.
 
@@ -115,6 +115,8 @@ Continue the runs to 100 communication rounds:
 
 Run the held-out test evaluation:
 
+For each run, the checkpoint with the highest validation Macro-F1 is selected before test access. The evaluation script then loads the selected checkpoint, runs inference on the held-out test set, calculates the final metrics, and writes the evaluation outputs.
+
 `python3 fedartml_clean/09_evaluate_d1_clean_test.py --seeds 42 43 --execute-test`
 
 ### Dataset 2
@@ -159,11 +161,18 @@ Continue the runs to 100 communication rounds:
 
 Run the held-out test evaluation:
 
+For each run, the checkpoint with the highest validation Macro-F1 is selected before test access. The evaluation script then loads the selected checkpoint, runs inference on the held-out test set, calculates the final metrics, and writes the evaluation outputs.
+
 `python3 fedartml_clean/d2_09_evaluate_clean_test.py --seeds 42 43 --execute-test`
 
 ### Included Final Outputs
 
 The repository includes the final 100-round histories and checkpoints for both datasets, together with held-out test results, per-class results, confusion matrices, checkpoint-selection records, and attack-detection summaries.
+
+- **D1 100-round training outputs and checkpoints:** `fedartml_clean/convergence_extension_100/`
+- **D1 held-out test outputs:** `fedartml_clean/final_test_100r/`
+- **D2 100-round training outputs and checkpoints:** `fedartml_clean/d2_convergence_extension_100/`
+- **D2 held-out test outputs:** `fedartml_clean/d2_final_test_100r/`
 
 ## Author
 

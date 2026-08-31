@@ -22,6 +22,22 @@ Raw datasets are not redistributed in this repository.
 
 Both datasets are part of the University of Queensland Machine Learning-Based NIDS dataset collection.
 
+## Environment
+
+The development environment used for the dissertation was:
+
+- Python 3.14.2
+- NumPy 2.4.6
+- pandas 3.0.3
+- PyTorch 2.12.0
+- scikit-learn 1.9.0
+- Matplotlib 3.11.1
+- FedArtML 0.1.34
+
+Install the recorded dependencies with `python3 -m pip install -r requirements.txt`.
+
+FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
+
 ## Experiment 1 — Baseline Federated Learning Study
 
 Earlier baseline experiments evaluated **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.
@@ -43,11 +59,36 @@ The held-out test data is kept separate from training and model selection and is
 
 The experiment examines how the three federated optimisation methods behave as client data heterogeneity changes under a controlled experimental setup.
 
-## Experiment 2 — Label Skew Study
+## Experiment 2 — Label-Skew Study Reported in the Dissertation
 
-This study examines FedAvg under different levels of client label skew on both dissertation datasets.
+The code for the experiment reported in the dissertation is organised under `fedartml_clean/`.
 
-The IID condition reuses the baseline IID partitions. Non-IID partitions are generated using FedArtML, with client heterogeneity measured using Hellinger distance. The study uses multiple partition seeds and separate held-out test evaluation.
+For both datasets, the experimental setting consists of `K=5` clients and partition seeds `42` and `43`.
+
+### Dataset 1 — NF-UNSW-NB15-v2
+
+Follow the Dataset 1 experiment through these files:
+
+1. **IID partition preparation:** `fedartml_clean/00_prepare_iid_partitions.py`
+2. **FedArtML non-IID partition generation:** `fedartml_clean/02_write_fedartml_partition*.py`
+3. **Partition heterogeneity checks:** `fedartml_clean/05_d1_partition_diagnostics.py`
+4. **FedAvg experiment runs:** `fedartml_clean/04_run_d1_fedavg_matrix.py`
+5. **Final 100-round runs:** `fedartml_clean/06_extend_d1_fedavg_rounds.py`
+6. **Held-out test evaluation:** `fedartml_clean/09_evaluate_d1_clean_test.py`
+
+The Dataset 1 files under `fedartml_clean/` use the root-level FedAvg training implementation in `44_train_fedavg_hd_selected.py`. The connection between `fedartml_clean/05_d1_partition_diagnostics.py` and the root-level `28_build_heterogeneity_summary.py` is explained in the Dataset 1 diagnostics section below.
+
+### Dataset 2 — NF-CSE-CIC-IDS2018-v2
+
+Follow the Dataset 2 experiment through these files:
+
+1. **IID partition preparation:** `fedartml_clean/00_prepare_iid_partitions.py`
+2. **FedArtML non-IID partition generation:** `fedartml_clean/d2_02_write_fedartml_partition*.py`
+3. **FedAvg experiment runs:** `fedartml_clean/d2_03a_run_fedavg_matrix.py`
+4. **Final 100-round runs:** `fedartml_clean/d2_04_extend_fedavg_rounds.py`
+5. **Held-out test evaluation:** `fedartml_clean/d2_09_evaluate_clean_test.py`
+
+The Dataset 2 files under `fedartml_clean/` use the root-level FedAvg training implementation in `d2_04_train_fedavg.py`.
 
 ## Inspecting the Label Skew Study Structure
 
@@ -58,22 +99,6 @@ tree -L 2 fedartml_clean -I "*.log|*.pid|__pycache__|convergence_extension|conve
 ```
 
 It shows the Dataset 1 and Dataset 2 partition-generation, FedAvg training and evaluation scripts, together with the final 100-round checkpoint and held-out test-output directories, while hiding logs, PID files, caches and intermediate directories.
-
-## Environment
-
-The development environment used for the dissertation was:
-
-- Python 3.14.2
-- NumPy 2.4.6
-- pandas 3.0.3
-- PyTorch 2.12.0
-- scikit-learn 1.9.0
-- Matplotlib 3.11.1
-- FedArtML 0.1.34
-
-Install the recorded dependencies with `python3 -m pip install -r requirements.txt`.
-
-FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
 
 ## Reproducing the Label Skew Study
 

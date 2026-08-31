@@ -38,28 +38,19 @@ Install the recorded dependencies with `python3 -m pip install -r requirements.t
 
 FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
 
-## Experiment 1 — Baseline Federated Learning Study
+## Experiment 1 — Fixed-α Federated Learning Experiment
+
+For each dataset, Experiment 1 uses `K=5` clients with one IID condition and three fixed non-IID Dirichlet settings:
+
+- α = `0.1`
+- α = `0.5`
+- α = `1.0`
+
+Partition seeds `42`, `43`, and `44` are used for each condition.
+
+FedAvg, FedProx and SCAFFOLD are trained using these client partitions. A centralised MLP is also trained as a non-federated reference. Model selection uses validation data, while the held-out test set is reserved for the final evaluation.
 
 **Detailed Experiment 1 pipeline and file guide:** [`EXPERIMENT_1_README.md`](EXPERIMENT_1_README.md)
-
-Earlier baseline experiments evaluated **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.
-
-For each dataset, training data is partitioned across five federated clients. The study includes an IID condition and fixed Dirichlet non-IID conditions, with multiple partition seeds used to avoid basing the comparison on a single client allocation.
-
-The experimental workflow contains separate stages for:
-
-1. dataset preprocessing;
-2. federated client partition construction;
-3. centralised reference-model training;
-4. FedAvg training;
-5. FedProx training;
-6. SCAFFOLD training;
-7. implementation verification;
-8. held-out test evaluation.
-
-The held-out test data is kept separate from training and model selection and is used for final evaluation.
-
-The experiment examines how the three federated optimisation methods behave as client data heterogeneity changes under a controlled experimental setup.
 
 ## Experiment 2 — Label-Skew Study Reported in the Dissertation
 

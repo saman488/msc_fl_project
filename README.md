@@ -40,6 +40,8 @@ FedArtML is publicly available from PyPI; this project uses version `0.1.34`.
 
 ## Experiment 1 — Baseline Federated Learning Study
 
+**Detailed Experiment 1 pipeline and file guide:** [`EXPERIMENT_1_README.md`](EXPERIMENT_1_README.md)
+
 Earlier baseline experiments evaluated **FedAvg, FedProx, and SCAFFOLD** under controlled client-data heterogeneity.
 
 For each dataset, training data is partitioned across five federated clients. The study includes an IID condition and fixed Dirichlet non-IID conditions, with multiple partition seeds used to avoid basing the comparison on a single client allocation.
